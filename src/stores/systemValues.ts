@@ -5,6 +5,8 @@ export const useSystemValues = defineStore('useSytemValues', {
     isPageHome: false,
     currentPhoto: 0,
     currentDebtor: 'monetario',
+    userAuth: false,
+    userName: '',
   }),
   getters: {
     gteCurrentPhoto(state): number {
@@ -15,6 +17,12 @@ export const useSystemValues = defineStore('useSytemValues', {
     },
     getCurrentPage(state): boolean {
       return state.isPageHome
+    },
+    getUserStatus(state): boolean {
+      return state.userAuth
+    },
+    getUserName(state): string {
+      return state.userName
     },
   },
   actions: {
@@ -34,6 +42,12 @@ export const useSystemValues = defineStore('useSytemValues', {
     },
     setCurrentPage(payload: boolean): void {
       this.isPageHome = payload
+    },
+    setUserStatus(payload: boolean): void {
+      this.userAuth = payload
+    },
+    setUserName(payload: string): void {
+      this.userName = payload
     },
   },
 })

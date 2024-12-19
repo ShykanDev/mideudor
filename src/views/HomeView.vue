@@ -4,14 +4,19 @@
       <template #main>
         <!-- top image and title intro -->
         <!-- Title section -->
-        <h1 class="text-5xl font-semibold text-left uppercase text-slate-700 font-kanit">Sitio para
-          reflexionar sobre
-          las <span class="text-cyan-600">deudas</span> en
-          sus
-          <span class="text-cyan-600">diversas formas:</span>
+        <h1 class="px-3 text-5xl font-semibold text-left uppercase text-slate-700 font-kanit">Sitio para
+          <span class="text-sky-800">compartir experiencias</span> sobre
+          el deudor <span class="italic text-orange-500 uppercase animate-fade-down" :key="dynamicValue"> {{
+            dynamicValue }} </span>
+          <span class="text-cyan-600"> en sus diversas formas:</span>
           experiencias, consecuencias y
           lecciones.
         </h1>
+        <div class="my-5 overflow-hidden">
+          <SliderDebtors />
+          <!-- <TextChanger /> -->
+        </div>
+
         <div class="flex flex-col gap-8 mt-6 text-gray-800 md:flex-row font-poppins">
           <div></div>
           <h3 class="max-w-md text-lg leading-relaxed">
@@ -19,15 +24,53 @@
             contraído con usted, abarcando diversos tipos de deudas. A lo largo de esta página, encontrará categorías
             específicas que le permitirán comentar y acceder a información detallada sobre cada tipo de deuda.
             <div class="flex flex-col items-center gap-4 mt-6 font-poppins">
+              <div class="flex flex-wrap justify-center gap-4">
+                <router-link :to="{ name: 'home' }"
+                  class="flex items-center px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-md shadow-md btn hover:bg-gray-200">
+                  <i class="mr-2 fas fa-home"></i> Inicio
+                </router-link>
+                <a href="#comentarios"
+                  class="flex items-center px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-md shadow-md btn hover:bg-gray-200">
+                  <i class="mr-2 fas fa-comment-dots"></i> Comentarios
+                </a>
+                <router-link v-if="!useSystemValues().getUserStatus" :to="{ name: 'login' }"
+                  class="flex items-center px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-md shadow-md btn hover:bg-gray-200">
+                  <i class="mr-2 fas fa-sign-in-alt"></i> Iniciar Sesión
+                </router-link>
+                <router-link v-if="!useSystemValues().getUserStatus" :to="{ name: 'register' }"
+                  class="flex items-center px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-md shadow-md btn hover:bg-gray-200">
+                  <i class="mr-2 fas fa-user-plus"></i> Registrarse
+                </router-link>
+                <router-link :to="{ name: 'about' }"
+                  class="flex items-center px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-md shadow-md btn hover:bg-gray-200">
+                  <i class="mr-2 fas fa-info-circle"></i> Sobre Nosotros
+                </router-link>
+                <router-link :to="{ name: 'privacy' }"
+                  class="flex items-center px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-md shadow-md btn hover:bg-gray-200">
+                  <i class="mr-2 fas fa-balance-scale"></i> Políticas TyC
+                </router-link>
+                <a href="#seguridad"
+                  class="flex items-center px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-md shadow-md btn hover:bg-gray-200">
+                  <i class="mr-2 fas fa-lock"></i> Seguridad
+                </a>
+                <a href="#historias"
+                  class="flex items-center px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-md shadow-md btn hover:bg-gray-200">
+                  <i class="mr-2 fas fa-book-open"></i> Historias
+                </a>
+                <a href="mailto:informes@grupochimex.com"
+                  class="flex items-center px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-md shadow-md btn hover:bg-gray-200">
+                  <i class="mr-2 fas fa-envelope"></i> Contacto
+                </a>
+              </div>
               <!-- Botón de Registrarse -->
-              <router-link :to="{ name: 'register' }"
+              <router-link v-if="!useSystemValues().getUserStatus" :to="{ name: 'register' }"
                 class="flex items-center justify-center w-48 px-4 py-2 text-lg font-semibold text-white transition duration-300 rounded-lg shadow-md bg-cyan-800 hover:bg-cyan-700">
                 <i class="mr-2 fas fa-user-plus"></i>
                 Registrarse
               </router-link>
 
               <!-- Botón de Iniciar Sesión -->
-              <router-link :to="{ name: 'login' }"
+              <router-link v-if="!useSystemValues().getUserStatus" :to="{ name: 'login' }"
                 class="flex items-center justify-center w-48 px-4 py-2 text-lg font-semibold transition duration-300 bg-gray-100 rounded-lg shadow-md text-cyan-800 hover:bg-gray-200">
                 <i class="mr-2 fas fa-sign-in-alt"></i>
                 Iniciar Sesión
@@ -36,77 +79,103 @@
 
           </h3>
 
-          <h3 class="p-6 text-lg leading-relaxed border-2 rounded-lg shadow-lg bg-gray-50 border-cyan-900">
-            Explore nuestra plataforma para conocer las experiencias de otros usuarios relacionadas con diferentes tipos
-            de deudas: monetarias, morales, sociales y más. Este sitio ha sido diseñado para fomentar el diálogo y el
-            intercambio de vivencias de manera segura y sin costo alguno. Regístrese y participe en una comunidad
-            comprometida con el entendimiento, la reflexión y la transparencia.
-            <div class="flex items-start justify-center mt-6 space-x-4">
-              <h3 class="mt-6 text-lg font-semibold text-center text-cyan-900">Siguenos en nuestras redes sociales:</h3>
+          <div class="container p-8 space-y-8 border border-gray-200 rounded-lg shadow-lg bg-gray-50">
+            <!-- Título principal -->
+            <h3 class="text-xl text-gray-800">
+              Explore nuestra plataforma para conocer las experiencias de otros usuarios relacionadas con diferentes
+              tipos
+              de deudas: monetarias, morales, sociales y más. Este sitio ha sido diseñado para fomentar el diálogo y el
+              intercambio de vivencias de manera segura y sin costo alguno. Regístrese y participe en una comunidad
+              comprometida con el entendimiento, la reflexión y la transparencia.
+            </h3>
+            <div class="max-w-[100%]">
+            </div>
+
+            <!-- Redes Sociales -->
+            <div class="flex items-center justify-center space-x-6">
+              <p class="text-lg font-medium text-gray-700">
+                Síguenos en nuestras redes sociales:
+              </p>
               <a href="https://www.instagram.com/_prasadam_/?hl=es-la" target="_blank"
-                class="p-2 text-pink-600 transition duration-300 border border-gray-300 shadow-md rounded-2xl hover:text-pink-500 hover:shadow-lg">
-                <i class="fab fa-instagram fa-2x"></i>
+                class="p-2 text-pink-500 transition duration-300 border rounded-full hover:text-pink-500 hover:shadow-md hover:border-pink-500">
+                <i class="fab fa-instagram fa-lg"></i>
               </a>
               <a href="https://api.whatsapp.com/send/?phone=525562516687&text&type=phone_number&app_absent=0"
                 target="_blank"
-                class="p-2 text-green-600 transition duration-300 border border-gray-300 shadow-md rounded-2xl hover:text-green-500 hover:shadow-lg">
-                <i class="fab fa-whatsapp fa-2x"></i>
+                class="p-2 text-green-500 transition duration-300 border rounded-full hover:text-green-500 hover:shadow-md hover:border-green-500">
+                <i class="fab fa-whatsapp fa-lg"></i>
               </a>
               <a href="https://x.com/_prasadam_" target="_blank"
-                class="p-2 text-blue-500 transition duration-300 border border-gray-300 shadow-md rounded-2xl hover:text-blue-400 hover:shadow-lg">
-                <i class="fab fa-twitter fa-2x"></i>
+                class="p-2 text-blue-400 transition duration-300 border rounded-full hover:text-blue-400 hover:shadow-md hover:border-blue-400">
+                <i class="fab fa-twitter fa-lg"></i>
               </a>
               <a href="https://www.facebook.com/AyurevedaPrasadam" target="_blank"
-                class="p-2 text-blue-600 transition duration-300 border border-gray-300 shadow-md rounded-2xl hover:text-blue-600 hover:shadow-lg">
-                <i class="fab fa-facebook fa-2x"></i>
-              </a>
-
-            </div>
-            <div class="flex flex-wrap items-center justify-center gap-4 mt-6 font-poppins">
-              <span>Tipos de Deudas a explorar:</span>
-              <a href="#Monetario"
-                class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white transition duration-300 rounded-lg shadow-md bg-cyan-800 hover:bg-cyan-700">
-                <i class="fas fa-coins"></i> Monetario
-              </a>
-              <a href="#Moral"
-                class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white transition duration-300 rounded-lg shadow-md bg-cyan-800 hover:bg-cyan-700">
-                <i class="fas fa-heart"></i> Moral
-              </a>
-              <a href="#Social"
-                class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white transition duration-300 rounded-lg shadow-md bg-cyan-800 hover:bg-cyan-700">
-                <i class="fas fa-users"></i> Social
-              </a>
-              <a href="#Gubernamental"
-                class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white transition duration-300 rounded-lg shadow-md bg-cyan-800 hover:bg-cyan-700">
-                <i class="fas fa-gavel"></i> Gubernamental
-              </a>
-              <a href="#Familiar"
-                class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white transition duration-300 rounded-lg shadow-md bg-cyan-800 hover:bg-cyan-700">
-                <i class="fas fa-home"></i> Familiar
-              </a>
-              <a href="#Profesional"
-                class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white transition duration-300 rounded-lg shadow-md bg-cyan-800 hover:bg-cyan-700">
-                <i class="fas fa-briefcase"></i> Profesional
-              </a>
-              <a href="#Ambiental"
-                class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white transition duration-300 rounded-lg shadow-md bg-cyan-800 hover:bg-cyan-700">
-                <i class="fas fa-tree"></i> Ambiental
-              </a>
-              <a href="#Religioso"
-                class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white transition duration-300 rounded-lg shadow-md bg-cyan-800 hover:bg-cyan-700">
-                <i class="fas fa-om"></i> Religioso
-              </a>
-              <a href="#Educativo"
-                class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white transition duration-300 rounded-lg shadow-md bg-cyan-800 hover:bg-cyan-700">
-                <i class="fas fa-graduation-cap"></i> Educativo
-              </a>
-              <a href="#Histórico"
-                class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white transition duration-300 rounded-lg shadow-md bg-cyan-800 hover:bg-cyan-700">
-                <i class="fas fa-landmark"></i> Histórico
+                class="p-2 text-blue-500 transition duration-300 border rounded-full hover:text-blue-600 hover:shadow-md hover:border-blue-600">
+                <i class="fab fa-facebook fa-lg"></i>
               </a>
             </div>
 
-          </h3>
+            <!-- Tipos de Deudas -->
+            <div class="p-6 space-y-4 bg-white rounded-lg shadow-md">
+              <p class="text-lg font-medium text-gray-800">
+                Tipos de Deudas a explorar:
+              </p>
+              <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+                <a href="#Deudor Monetario"
+                  class="flex items-center gap-3 p-3 transition transform rounded-lg bg-sky-100 hover:bg-sky-200 hover:shadow-lg hover:-translate-y-1">
+                  <i class="fas fa-coins text-sky-600"></i>
+                  <span class="font-semibold text-sky-800">Monetario</span>
+                </a>
+                <a href="#Deudor Moral"
+                  class="flex items-center gap-3 p-3 transition transform rounded-lg bg-sky-100 hover:bg-sky-200 hover:shadow-lg hover:-translate-y-1">
+                  <i class="fas fa-heart text-sky-600"></i>
+                  <span class="font-semibold text-sky-800">Moral</span>
+                </a>
+                <a href="#Deudor Social"
+                  class="flex items-center gap-3 p-3 transition transform rounded-lg bg-sky-100 hover:bg-sky-200 hover:shadow-lg hover:-translate-y-1">
+                  <i class="fas fa-users text-sky-600"></i>
+                  <span class="font-semibold text-sky-800">Social</span>
+                </a>
+                <a href="#Deudor Gubernamental"
+                  class="flex items-center gap-3 p-3 transition transform rounded-lg bg-sky-100 hover:bg-sky-200 hover:shadow-lg hover:-translate-y-1">
+                  <i class="fas fa-gavel text-sky-600"></i>
+                  <span class="font-semibold text-sky-800">Gubernamental</span>
+                </a>
+                <a href="#Deudor Familiar"
+                  class="flex items-center gap-3 p-3 transition transform rounded-lg bg-sky-100 hover:bg-sky-200 hover:shadow-lg hover:-translate-y-1">
+                  <i class="fas fa-home text-sky-600"></i>
+                  <span class="font-semibold text-sky-800">Familiar</span>
+                </a>
+                <a href="#Deudor Profesional"
+                  class="flex items-center gap-3 p-3 transition transform rounded-lg bg-sky-100 hover:bg-sky-200 hover:shadow-lg hover:-translate-y-1">
+                  <i class="fas fa-briefcase text-sky-600"></i>
+                  <span class="font-semibold text-sky-800">Profesional</span>
+                </a>
+                <a href="#Deudor Ambiental"
+                  class="flex items-center gap-3 p-3 transition transform rounded-lg bg-sky-100 hover:bg-sky-200 hover:shadow-lg hover:-translate-y-1">
+                  <i class="fas fa-tree text-sky-600"></i>
+                  <span class="font-semibold text-sky-800">Ambiental</span>
+                </a>
+                <a href="#Deudor Religioso"
+                  class="flex items-center gap-3 p-3 transition transform rounded-lg bg-sky-100 hover:bg-sky-200 hover:shadow-lg hover:-translate-y-1">
+                  <i class="fas fa-om text-sky-600"></i>
+                  <span class="font-semibold text-sky-800">Religioso</span>
+                </a>
+                <a href="#Deudor Educativo"
+                  class="flex items-center gap-3 p-3 transition transform rounded-lg bg-sky-100 hover:bg-sky-200 hover:shadow-lg hover:-translate-y-1">
+                  <i class="fas fa-graduation-cap text-sky-600"></i>
+                  <span class="font-semibold text-sky-800">Educativo</span>
+                </a>
+                <a href="#Deudor Histórico"
+                  class="flex items-center gap-3 p-3 transition transform rounded-lg bg-sky-100 hover:bg-sky-200 hover:shadow-lg hover:-translate-y-1">
+                  <i class="fas fa-landmark text-sky-600"></i>
+                  <span class="font-semibold text-sky-800">Histórico</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+
         </div>
 
         <section class="relative justify-center w-full overflow-hidden">
@@ -117,7 +186,18 @@
           <section class="flex flex-wrap justify-around gap-4 px-2 mt-5">
             <DebtorsCard v-for=" info in info" :key="info.title" :info="info" />
           </section>
+          <section>
+            <h2 id="historias" class="my-8 text-4xl font-bold text-center text-cyan-800">Historias</h2>
 
+            <section class="grid grid-cols-1 gap-6 px-3 lg:grid-cols-2">
+              <HistoriesCard v-for="history in histories" :key="history.title" :image="history.image"
+                :category="history.category" :title="history.title" :date="history.date" :history="history.history"
+                :name="history.name" />
+            </section>
+          </section>
+          <article class="py-4" id="comentarios">
+
+          </article>
           <section class="flex justify-between px-2 mt-5 text-center font-poppins">
             <ButtonDebtor btn-name="Monetario" icon="fa-coins" img />
             <ButtonDebtor btn-name="Moral" icon="fa-heart" />
@@ -132,6 +212,9 @@
           </section>
 
           <section>
+
+
+
             <section class="p-6 rounded-lg shadow-md bg-gray-50">
 
               <h2 class="mb-4 text-2xl font-bold text-center text-emerald-800 font-kanit">Comentarios para
@@ -154,7 +237,45 @@
           <!-- TypesSection -->
 
           <!-- Debtors  -->
-
+          <section class="py-12 bg-gray-100">
+            <div class="">
+              <h2 class="mb-8 text-3xl font-bold text-center text-gray-800">Seguridad y Privacidad</h2>
+              <div class="px-8 font-poppins">
+                <p class="mb-6 text-lg text-gray-700">
+                  <i class="mr-2 text-emerald-600 fas fa-shield-alt"></i>
+                  Este sitio es completamente seguro y utiliza tecnologías de seguridad avanzadas para proteger sus
+                  datos. Nos tomamos muy en serio la privacidad y la seguridad de nuestros usuarios.
+                </p>
+                <p class="mb-6 text-lg text-gray-700">
+                  <i class="mr-2 text-emerald-600 fas fa-lock"></i>
+                  Su información está protegida con cifrado SSL, asegurando que sus datos personales estén siempre
+                  seguros. Puede confiar en que sus datos están en buenas manos.
+                </p>
+                <p class="mb-6 text-lg text-gray-700">
+                  <i class="mr-2 text-emerald-600 fas fa-hand-holding-heart"></i>
+                  El uso de este sitio es gratuito y no cobramos por ninguno de nuestros servicios. Siéntase libre de
+                  explorar y utilizar todas nuestras funcionalidades sin preocupaciones. Estamos aquí para ayudarle y
+                  hacer su experiencia lo más agradable posible.
+                </p>
+                <p class="mb-6 text-lg text-gray-700">
+                  <i class="mr-2 text-emerald-600 fas fa-smile"></i>
+                  Nuestro sitio busca ayudarle, diseñado para que cualquier persona pueda navegar y
+                  encontrar lo que necesita sin complicaciones. Queremos que su experiencia sea lo más placentera
+                  posible.
+                </p>
+                <p class="mb-6 text-lg text-gray-700">
+                  <i class="mr-2 text-emerald-600 fas fa-globe"></i>
+                  Estamos comprometidos a ofrecerle la mejor experiencia posible y a garantizar su seguridad y
+                  privacidad en todo momento. Gracias por elegirnos y confiar en nosotros.
+                </p>
+                <p class="mb-6 text-lg text-gray-700">
+                  <i class="mr-2 text-emerald-600 fas fa-thumbs-up"></i>
+                  Si tiene alguna pregunta o necesita asistencia, no dude en contactarnos. Estamos aquí para ayudarle
+                  en todo lo que necesite.
+                </p>
+              </div>
+            </div>
+          </section>
         </section>
       </template>
     </MainLayout>
@@ -168,6 +289,7 @@ import DebtorsCard from '@/components/DebtorsCard.vue';
 import MainLayout from '@/layouts/MainLayout.vue';
 import { useSystemValues } from '@/stores/systemValues';
 import { onMounted, onUnmounted } from 'vue';
+import HistoriesCard from '@/components/HistoriesCard.vue';
 
 const info = [
   {
@@ -709,6 +831,90 @@ const info = [
   }
 ]
 
+const histories = [
+  {
+    "name": "Ana Gómez",
+    "date": "2023-01-10",
+    "title": "La Deuda Monetaria de Ana",
+    "history": "Ana Gómez era una mujer trabajadora que siempre había luchado por mantener a su familia. Sin embargo, una serie de desafortunados eventos la llevaron a acumular una gran deuda monetaria. Ana había pedido un préstamo para iniciar un pequeño negocio, pero las ventas no fueron como esperaba y pronto se encontró sin poder pagar las cuotas. La presión de los acreedores y la amenaza de perder su hogar la llevaron al borde de la desesperación. Ana decidió buscar ayuda y encontró una organización sin fines de lucro que ofrecía asesoramiento financiero y apoyo emocional a personas en situaciones similares. Con su ayuda, Ana pudo reestructurar su deuda y encontrar un trabajo adicional que le permitió poco a poco salir del agujero financiero. La experiencia le enseñó la importancia de la planificación financiera y la gestión responsable del dinero. Ana no solo logró saldar su deuda, sino que también se convirtió en una defensora de la educación financiera en su comunidad, ayudando a otros a evitar los errores que ella había cometido. Ana comenzó a ofrecer talleres y charlas sobre cómo manejar el dinero de manera efectiva, y su historia inspiró a muchos a tomar el control de sus finanzas. Con el tiempo, Ana se convirtió en una figura respetada en su comunidad, conocida por su sabiduría financiera y su compromiso con ayudar a los demás. Además, Ana decidió volver a la universidad para estudiar finanzas y así poder ofrecer un mejor asesoramiento a quienes lo necesitaran. Su dedicación y esfuerzo la llevaron a obtener un título en finanzas, lo que le permitió abrir su propia consultoría financiera. Ana no solo ayudó a cientos de personas a mejorar su situación financiera, sino que también se convirtió en un ejemplo de superación y resiliencia para su comunidad.",
+    "category": "Monetario",
+    "image": 'https://i.ibb.co/KD7Z9mF/5fda5f0c-11ce-4246-81db-860f07405e65.jpg'
+  },
+  {
+    "name": "Carlos Rodríguez",
+    "date": "2023-12-05",
+    "title": "El Dilema de Carlos",
+    "history": "Carlos Rodríguez era un joven abogado que había dedicado su vida a luchar por la justicia y los derechos humanos. Desde sus primeros años en la universidad, Carlos había mostrado un profundo compromiso con la ética y la moral, y había trabajado incansablemente para defender a aquellos que no podían defenderse por sí mismos. Su carrera estaba en auge y era respetado tanto por sus colegas como por sus clientes. Sin embargo, un día se encontró frente a un dilema moral que pondría a prueba todos sus principios. Un poderoso empresario, conocido por sus prácticas corruptas y su falta de escrúpulos, se acercó a Carlos con una oferta tentadora. El empresario estaba enfrentando serias acusaciones de fraude y necesitaba la mejor defensa posible. A cambio, ofrecía a Carlos una suma de dinero que podría cambiar su vida y la de su familia para siempre. Carlos se encontró en una encrucijada. Por un lado, aceptar el caso significaría traicionar todos los principios que había defendido durante años. Por otro lado, rechazar la oferta podría significar perder una oportunidad única para asegurar el futuro de su familia. Carlos decidió tomarse un tiempo para reflexionar. Recordó las palabras de su mentor, un viejo abogado que siempre le había dicho que la verdadera justicia no se mide en términos de dinero, sino en la integridad y la honestidad con la que se defienden los derechos de las personas. Carlos decidió rechazar la oferta del empresario y seguir adelante con sus propios términos. La decisión no fue fácil y tuvo consecuencias inmediatas. Algunos de sus colegas y amigos cuestionaron su juicio y varios clientes potenciales retiraron su apoyo.",
+    "category": "Moral",
+    "image": 'https://i.ibb.co/QMc5c8Y/8e995ec1-0c48-4625-a779-ffc41ed7bc4c.jpg'
+  },
+  {
+    "name": "Laura Martínez",
+    "date": "2023-03-20",
+    "title": "La Deuda Social de Laura",
+    "history": "Laura Martínez era una activista social que había dedicado su vida a luchar por los derechos de los más vulnerables. Sin embargo, un día se encontró en una situación complicada. Laura había organizado una campaña para recaudar fondos y apoyar a una comunidad marginada, pero los fondos recaudados no fueron suficientes para cubrir todas las necesidades. Laura se sintió en deuda con la comunidad y decidió buscar otras formas de ayudar. Con la colaboración de varias organizaciones y voluntarios, Laura logró conseguir más recursos y apoyo. La comunidad, agradecida por su esfuerzo y dedicación, le mostró su gratitud y reconocimiento. Laura aprendió que la deuda social no siempre se mide en términos monetarios, sino en el compromiso y la dedicación hacia los demás. Su experiencia le enseñó la importancia de la solidaridad y el trabajo en equipo para lograr cambios significativos en la sociedad. Laura continuó su labor social, organizando más campañas y proyectos para ayudar a otras comunidades en necesidad. Su ejemplo inspiró a muchos a unirse a la causa y a trabajar juntos por un mundo más justo y equitativo. Laura se convirtió en una líder respetada en su comunidad, conocida por su incansable lucha por los derechos de los más vulnerables y su compromiso con la justicia social. Además, Laura decidió fundar una organización sin fines de lucro dedicada a apoyar a comunidades marginadas. Con el tiempo, su organización creció y se convirtió en un referente en el ámbito social, ayudando a miles de personas a mejorar sus condiciones de vida. Laura no solo logró hacer una diferencia en su comunidad, sino que también dejó un legado de solidaridad y compromiso social que inspiraría a muchos a seguir sus pasos.",
+    "category": "Social",
+    "image": 'https://i.ibb.co/5nZtRQM/52bbb9e7-d89f-4ec0-861e-3d8b6867be70.jpg'
+  },
+  {
+    "name": "Pedro Sánchez",
+    "date": "2023-04-30",
+    "title": "La Deuda Gubernamental de Pedro",
+    "history": "Pedro Sánchez era un funcionario público que había trabajado durante años en el gobierno local. Sin embargo, un día se encontró en una situación difícil. Pedro había sido responsable de un proyecto de infraestructura que había fracasado debido a la corrupción y la mala gestión. La comunidad, decepcionada y enojada, exigía respuestas y soluciones. Pedro se sintió en deuda con la comunidad y decidió tomar medidas para corregir la situación. Con la ayuda de otros funcionarios honestos y la colaboración de la comunidad, Pedro logró reestructurar el proyecto y asegurar su éxito. La comunidad, al ver su esfuerzo y dedicación, perdonó a Pedro y lo aceptó de nuevo con los brazos abiertos. Pedro aprendió una valiosa lección sobre la importancia de la transparencia y la responsabilidad en la gestión pública. Su experiencia le enseñó que la deuda gubernamental no solo se mide en términos económicos, sino en la confianza y el respeto hacia los ciudadanos. Pedro continuó su carrera en el servicio público, trabajando incansablemente para asegurar que todos los proyectos bajo su responsabilidad fueran manejados con transparencia y ética. Su ejemplo inspiró a otros funcionarios a seguir sus pasos y a trabajar por un gobierno más justo y transparente. Además, Pedro decidió implementar una serie de reformas en su departamento para mejorar la transparencia y la rendición de cuentas. Sus esfuerzos no solo mejoraron la eficiencia y la honestidad en su departamento, sino que también sentaron un precedente para otros funcionarios y departamentos. Pedro se convirtió en un líder respetado en su comunidad, conocido por su compromiso con la transparencia y la ética en la gestión pública.",
+    "category": "Gubernamental",
+    "image": 'https://i.ibb.co/Bctw2Fk/ded179ce-673c-414c-a8d3-abb5bf61e56f.jpg'
+  },
+  {
+    "name": "Sofía Ramírez",
+    "date": "2023-05-15",
+    "title": "La Deuda Familiar de Sofía",
+    "history": "Sofía Ramírez era una mujer que siempre había valorado la unidad y el apoyo de su familia. Sin embargo, un día se encontró en una situación complicada. Sofía había pedido un préstamo a su hermano para iniciar un negocio, pero las cosas no salieron como esperaba y pronto se encontró sin poder devolver el dinero. La relación con su hermano se tensó y la familia se vio afectada por la situación. Sofía se sintió en deuda con su hermano y decidió buscar una solución. Con la ayuda de otros miembros de la familia y un plan de pago, Sofía logró saldar su deuda y restaurar la confianza y la unidad familiar. La experiencia le enseñó la importancia de la comunicación y el apoyo mutuo en la familia. Sofía aprendió que la deuda familiar no solo se mide en términos monetarios, sino en el amor y el respeto hacia los seres queridos. Sofía continuó trabajando en su negocio y, con el tiempo, logró convertirlo en un éxito. Su historia inspiró a su familia a mantenerse unida y a apoyarse mutuamente en los momentos difíciles. Sofía se convirtió en un ejemplo de resiliencia y amor familiar, demostrando que con comunicación y apoyo, cualquier desafío puede ser superado. Además, Sofía decidió organizar reuniones familiares regulares para fortalecer los lazos y la comunicación dentro de la familia. Estas reuniones no solo ayudaron a mantener la unidad familiar, sino que también permitieron a los miembros de la familia compartir sus problemas y encontrar soluciones juntos. Sofía se convirtió en una figura central en su familia, conocida por su sabiduría y su capacidad para unir a las personas.",
+    "category": "Familiar",
+    "image": 'https://i.ibb.co/BgLmRht/09c28758-8797-4d1e-a491-191488ed3b79.jpg'
+  },
+  {
+    "name": "Javier Fernández",
+    "date": "2023-06-25",
+    "title": "La Deuda Profesional de Javier",
+    "history": "Javier Fernández era un ingeniero que había trabajado durante años en una empresa de construcción. Sin embargo, un día se encontró en una situación difícil. Javier había cometido un error en un proyecto importante que había causado grandes pérdidas a la empresa. La presión de sus superiores y la amenaza de perder su empleo lo llevaron al borde de la desesperación. Javier decidió buscar ayuda y encontró un mentor que le ofreció apoyo y orientación. Con su ayuda, Javier pudo corregir su error y encontrar una solución que beneficiara a la empresa. La experiencia le enseñó la importancia de la responsabilidad y el aprendizaje continuo en el ámbito profesional. Javier no solo logró salvar su empleo, sino que también se convirtió en un ejemplo de superación y crecimiento profesional para sus colegas. Javier continuó su carrera en la empresa, asumiendo nuevos desafíos y responsabilidades. Su ejemplo inspiró a otros ingenieros a seguir sus pasos y a trabajar con responsabilidad y dedicación. Javier se convirtió en un líder respetado en su campo, conocido por su ética de trabajo y su compromiso con la excelencia. Además, Javier decidió compartir su conocimiento y experiencia con otros ingenieros más jóvenes, ofreciendo mentoría y apoyo. Su dedicación a la enseñanza y al desarrollo profesional de otros lo convirtió en una figura respetada y admirada en su industria. Javier no solo ayudó a muchos jóvenes ingenieros a alcanzar su potencial, sino que también dejó un legado de responsabilidad y excelencia en el ámbito profesional.",
+    "category": "Profesional",
+    "image": 'https://i.ibb.co/25DCknq/cc5705e2-37ed-4df9-ac39-7df7350eac31.jpg'
+  },
+  {
+    "name": "Elena Torres",
+    "date": "2023-07-10",
+    "title": "La Deuda Ambiental de Elena",
+    "history": "Elena Torres era una ambientalista que había dedicado su vida a proteger el medio ambiente. Sin embargo, un día se encontró en una situación complicada. Elena había organizado una campaña para limpiar un río contaminado, pero los esfuerzos no fueron suficientes para restaurar el ecosistema. Elena se sintió en deuda con la naturaleza y decidió buscar otras formas de ayudar. Con la colaboración de varias organizaciones y voluntarios, Elena logró conseguir más recursos y apoyo. La comunidad, agradecida por su esfuerzo y dedicación, le mostró su gratitud y reconocimiento. Elena aprendió que la deuda ambiental no solo se mide en términos de limpieza y conservación, sino en el compromiso y la dedicación hacia la naturaleza. Su experiencia le enseñó la importancia de la colaboración y el trabajo en equipo para lograr cambios significativos en el medio ambiente. Elena continuó su labor ambiental, organizando más campañas y proyectos para proteger y restaurar ecosistemas. Su ejemplo inspiró a muchos a unirse a la causa y a trabajar juntos por un planeta más saludable y sostenible. Elena se convirtió en una líder respetada en el movimiento ambiental, conocida por su incansable lucha por la protección de la naturaleza. Además, Elena decidió fundar una organización sin fines de lucro dedicada a la conservación del medio ambiente. Con el tiempo, su organización creció y se convirtió en un referente en el ámbito ambiental, ayudando a proteger y restaurar numerosos ecosistemas en todo el mundo. Elena no solo logró hacer una diferencia en el medio ambiente, sino que también dejó un legado de compromiso y dedicación hacia la naturaleza que inspiraría a muchos a seguir sus pasos.",
+    "category": "Ambiental",
+    "image": 'https://i.ibb.co/NLLgJ3V/f8a84625-e966-4da7-bec5-c7c2877b203d.jpg'
+  },
+  {
+    "name": "Miguel Herrera",
+    "date": "2023-08-20",
+    "title": "La Deuda Religiosa de Miguel",
+    "history": "Miguel Herrera era un hombre devoto que siempre había seguido los principios de su fe. Sin embargo, un día se encontró en una situación complicada. Miguel había prometido a su comunidad religiosa que organizaría un evento de caridad, pero debido a problemas personales, no pudo cumplir con su promesa. La comunidad se sintió traicionada y Miguel se sumió en una profunda depresión. Miguel decidió buscar ayuda y encontró a un líder espiritual que le ofreció apoyo y orientación. Con su ayuda, Miguel pudo organizar el evento de caridad y restaurar la confianza de su comunidad. La experiencia le enseñó la importancia de la fe y el compromiso en la vida religiosa. Miguel no solo logró cumplir con su promesa, sino que también se convirtió en un ejemplo de redención y crecimiento espiritual para su comunidad. Miguel continuó su labor en la comunidad religiosa, organizando más eventos y actividades para fortalecer la fe y el compromiso de sus miembros. Su ejemplo inspiró a muchos a seguir sus pasos y a trabajar por una comunidad más unida y espiritual. Miguel se convirtió en un líder respetado en su comunidad, conocido por su dedicación y su compromiso con la fe. Además, Miguel decidió escribir un libro sobre su experiencia y su camino hacia la redención. Su libro se convirtió en una guía inspiradora para muchos, ayudándoles a encontrar su propio camino espiritual y a fortalecer su fe. Miguel no solo ayudó a muchas personas a encontrar paz y propósito en sus vidas, sino que también dejó un legado de fe y compromiso que inspiraría a muchos a seguir sus pasos.",
+    "category": "Religioso",
+    "image": 'https://i.ibb.co/D4Cn796/6cd17c30-3ec8-462c-9df1-e97fd82e8a38.jpg'
+  },
+  {
+    "name": "Lucía García",
+    "date": "2023-09-05",
+    "title": "La Deuda Educativa de Lucía",
+    "history": "Lucía García era una maestra que había dedicado su vida a la educación de los niños. Sin embargo, un día se encontró en una situación complicada. Lucía había prometido a sus estudiantes que organizaría un proyecto educativo, pero debido a la falta de recursos, no pudo cumplir con su promesa. Los estudiantes se sintieron decepcionados y Lucía se sintió en deuda con ellos. Lucía decidió buscar ayuda y encontró a un grupo de padres y voluntarios que le ofrecieron apoyo y recursos. Con su ayuda, Lucía pudo organizar el proyecto educativo y restaurar la confianza de sus estudiantes. La experiencia le enseñó la importancia de la colaboración y el compromiso en la educación. Lucía no solo logró cumplir con su promesa, sino que también se convirtió en un ejemplo de dedicación y crecimiento educativo para sus estudiantes. Lucía continuó su labor educativa, implementando más proyectos y actividades para enriquecer el aprendizaje de sus estudiantes. Su ejemplo inspiró a otros maestros a seguir sus pasos y a trabajar con dedicación y compromiso. Lucía se convirtió en una líder respetada en su comunidad educativa, conocida por su innovación y su compromiso con la educación de calidad. Además, Lucía decidió fundar una organización sin fines de lucro dedicada a apoyar la educación en comunidades desfavorecidas. Con el tiempo, su organización creció y se convirtió en un referente en el ámbito educativo, ayudando a miles de niños a acceder a una educación de calidad. Lucía no solo logró hacer una diferencia en la educación, sino que también dejó un legado de dedicación y compromiso educativo que inspiraría a muchos a seguir sus pasos.",
+    "category": "Educativo",
+    "image": 'https://i.ibb.co/dQbY0Sm/Face-11.jpg'
+  },
+  {
+    "name": "Ricardo López",
+    "date": "2023-10-15",
+    "title": "La Deuda Histórica de Ricardo",
+    "history": "Ricardo López era un historiador que había dedicado su vida a preservar y difundir la historia de su país. Sin embargo, un día se encontró en una situación complicada. Ricardo había prometido a su comunidad que organizaría una exposición sobre la historia local, pero debido a problemas logísticos, no pudo cumplir con su promesa. La comunidad se sintió decepcionada y Ricardo se sintió en deuda con ellos. Ricardo decidió buscar ayuda y encontró a un grupo de colegas y voluntarios que le ofrecieron apoyo y recursos. Con su ayuda, Ricardo pudo organizar la exposición y restaurar la confianza de su comunidad. La experiencia le enseñó la importancia de la colaboración y el compromiso en la preservación de la historia. Ricardo no solo logró cumplir con su promesa, sino que también se convirtió en un ejemplo de dedicación y crecimiento histórico para su comunidad. Ricardo continuó su labor histórica, organizando más exposiciones y eventos para preservar y difundir la historia de su país. Su ejemplo inspiró a otros historiadores a seguir sus pasos y a trabajar con dedicación y compromiso. Ricardo se convirtió en un líder respetado en su comunidad, conocido por su pasión por la historia y su compromiso con la preservación del patrimonio cultural. Además, Ricardo decidió escribir un libro sobre la historia de su país, destacando la importancia de preservar y difundir el patrimonio cultural. Su libro se convirtió en una obra de referencia para muchos, ayudándoles a comprender y apreciar la rica historia de su país. Ricardo no solo ayudó a muchas personas a conectarse con su pasado, sino que también dejó un legado de dedicación y compromiso con la preservación de la historia que inspiraría a muchos a seguir sus pasos.",
+    "category": "Histórico",
+    "image": 'https://i.ibb.co/Lxb0YJj/8ba1690d-59d7-4544-8849-fa6794c73ff8.jpg'
+  }
+]
+
+// 3700 128 4 juegos digitales
 onMounted(() => {
   useSystemValues().setCurrentPage(true);
 })
@@ -717,8 +923,41 @@ onUnmounted(() => {
 })
 
 
+const values = [
+  'Monetario',
+  'Moral',
+  'Social',
+  'Gubernamental',
+  'Familiar',
+  'Profesional',
+  'Ambiental',
+  'Religioso',
+  'Educativo',
+  'Histórico'
+];
+
+const dynamicValue = ref(values[0]);
+let intervalId: number | undefined;
+
+const updateDynamicValue = () => {
+  const currentIndex = values.indexOf(dynamicValue.value);
+  const nextIndex = (currentIndex + 1) % values.length;
+  dynamicValue.value = values[nextIndex];
+};
+
+onMounted(() => {
+  intervalId = window.setInterval(updateDynamicValue, 3000); // Cambia el valor cada 3 segundos
+});
+
+onUnmounted(() => {
+  if (intervalId) {
+    clearInterval(intervalId);
+  }
+});
 import { collection, getFirestore, onSnapshot } from 'firebase/firestore';
 import { ref } from 'vue';
+import SliderDebtors from '@/components/SliderDebtors.vue';
+import TextChanger from '@/components/TextChanger.vue';
 
 const db = getFirestore();
 

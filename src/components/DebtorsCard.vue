@@ -2,15 +2,17 @@
   <OverlayScrollbarsComponent
     class="p-4 mx-auto bg-white border border-gray-200 rounded-lg  max-w-[650px] max-h-[900px] hover:shadow-lg transition-shadow ease-in-out duration-500"
     element="span">
-    <div class="">
+    <div class="" :id="info.title">
       <img alt="Imágen" class="object-cover w-full h-48 rounded-lg animate-fade animate-duration-[3s]" height="200"
         :src="info.img[useSystemValues().gteCurrentPhoto]" :key="useSystemValues().gteCurrentPhoto" width="300" />
       <h2 class="pb-2 mt-4 text-2xl font-semibold text-center border-b-2 border-gray-300 text-[#164E63] font-merienda">
         {{ info.title
         }}</h2>
-      <button
-        class="w-full p-2 my-2 text-white transition-colors duration-300 rounded-md bg-[#164E63] font-kanit hover:bg-emerald-800 focus:outline-none focus:bg-emerald focus:ring-2 focus:ring-offset-2 focus:ring-emerald-900">Comentar
-        como {{ info.title }}</button>
+      <RouterLink :to="{ name: 'comment' }" class="text-cyan-900">
+        <button
+          class="w-full p-2 my-2 text-white transition-colors duration-300 rounded-md bg-[#164E63] font-kanit hover:bg-emerald-800 focus:outline-none focus:bg-emerald focus:ring-2 focus:ring-offset-2 focus:ring-emerald-900">Comentar
+          como {{ info.title }}</button>
+      </RouterLink>
       <div class="overflow-hidden">
         <SliderBanks v-if="info.title == 'Deudor Monetario'" />
       </div>
@@ -42,6 +44,7 @@
 import { OverlayScrollbarsComponent } from "overlayscrollbars-vue";
 import SliderBanks from "./SliderBanks.vue";
 import { useSystemValues } from "@/stores/systemValues";
+import { title } from "process";
 interface Example {
   exampleTitle: string;
   exampleText: string;

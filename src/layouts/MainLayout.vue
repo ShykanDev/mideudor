@@ -1,31 +1,38 @@
 <template>
   <div class="">
     <header
-      class="sticky top-0 z-50 flex items-center justify-between w-full px-4 py-4 overflow-hidden shadow-md bg-cyan-900">
-      <div class="flex items-center justify-start ">
+      class="sticky top-0 z-50 flex items-center justify-between w-full px-4 py-4 overflow-hidden text-black bg-white shadow-md ">
+      <div class="relative flex items-center justify-start">
         <h1
           :class="{ 'animate-fade-down': title1, 'opacity-0': title2, 'text-sky-800': router.name === 'home', 'text-purple-800': router.name == 'types', 'text-orange-700': router.name === 'examples' }"
-          class="text-xl font-medium text-center text-white transition-all duration-500 ease-in-out font-poppins">
+          class="text-xl font-medium text-center transition-all duration-500 ease-in-out text-cyan-800 font-kanit">
           mideudor.com</h1>
         <h1
           :class="{ 'animate-fade-up': title2, 'opacity-0 animate-none': title1, 'text-sky-800': router.name === 'home', 'text-purple-800': router.name == 'types', 'text-orange-700': router.name === 'examples' }"
-          class="absolute text-xl font-medium text-center text-white transition-all duration-500 ease-in-out font-poppins">
+          class="absolute text-xl font-medium text-center transition-all duration-500 ease-in-out text-cyan-900 font-montserrat">
           misdeudores.com</h1>
       </div>
+      <img class="absolute left-[16%] w-24" src="../assets/SSL Secured Blue.svg" alt="">
+
       <div class="">
         <nav class="space-x-6 font-poppins">
-          <RouterLink :to="{ name: 'home' }" class="text-white"><i class="fas fa-home"></i> Inicio</RouterLink>
-          <RouterLink :to="{ name: 'comment' }" class="text-white"><i class="fas fa-comment"></i> Comentar</RouterLink>
-          <RouterLink :to="{ name: 'login' }" class="text-white"><i class="mr-2 fas fa-sign-in-alt"></i>Iniciar Sesion
+          <RouterLink :to="{ name: 'home' }" class="text-cyan-900"><i class="fas fa-home"></i> Inicio</RouterLink>
+          <RouterLink :to="{ name: 'comment' }" class="text-cyan-900"><i class="fas fa-comment"></i> Comentar
+
           </RouterLink>
-          <RouterLink :to="{ name: 'register' }" class="text-white"><i class="fas fa-laptop"></i> Registrarse
+          <RouterLink v-if="!useSystemValues().getUserStatus" :to="{ name: 'login' }" class="text-cyan-900"><i
+              class="mr-2 fas fa-sign-in-alt"></i>Iniciar
+            Sesion
           </RouterLink>
-          <RouterLink :to="{ name: 'about' }" class="text-white"><i class="mr-2 fas fa-user-plus"></i>Nosotros
+          <RouterLink v-if="!useSystemValues().getUserStatus" :to="{ name: 'register' }" class="text-cyan-900"><i
+              class="fas fa-laptop"></i> Registrarse
           </RouterLink>
-          <RouterLink :to="{ name: 'privacy' }" class="text-white"> <i class="mr-2 fas fa-lock"></i>Politica de
+          <RouterLink :to="{ name: 'about' }" class="text-cyan-900"><i class="mr-2 fas fa-user-plus"></i>Nosotros
+          </RouterLink>
+          <RouterLink :to="{ name: 'privacy' }" class="text-cyan-900"> <i class="mr-2 fas fa-lock"></i>Politica de
             Privacidad
           </RouterLink>
-          <RouterLink :to="{ name: 'terms' }" class="text-white"><i class="mr-2 fas fa-info-circle"></i>Terminos
+          <RouterLink :to="{ name: 'terms' }" class="text-cyan-900"><i class="mr-2 fas fa-info-circle"></i>Terminos
           </RouterLink>
         </nav>
       </div>
@@ -33,14 +40,14 @@
 
     </header>
     <main>
-      <slot name="main">
+      <slot class="" name="main">
 
       </slot>
 
     </main>
 
 
-    <footer class="m-4 bg-white rounded-lg shadow dark:bg-gray-900 font-poppins">
+    <footer class="mt-4 bg-white rounded-lg shadow font-poppins">
       <div class="w-full max-w-screen-xl p-4 mx-auto md:py-8">
         <!-- Título del sitio -->
         <div class="mb-6 text-center">
@@ -55,7 +62,7 @@
           </p>
         </div>
         <!-- Enlaces principales -->
-        <div class="sm:flex sm:items-center sm:justify-between">
+        <div class="flex justify-center">
           <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
             <li>
               <router-link to="/about" class="hover:underline me-4 md:me-6">
@@ -95,6 +102,7 @@
 </template>
 
 <script lang="ts" setup>
+import { useSystemValues } from '@/stores/systemValues';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 const router = useRoute();

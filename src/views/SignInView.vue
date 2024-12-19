@@ -204,6 +204,12 @@
 import MainLayout from '@/layouts/MainLayout.vue';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { ref } from 'vue';
+import { Notyf } from 'notyf';
+import 'notyf/notyf.min.css'; // for React, Vue and Svelte
+import { useRouter } from 'vue-router';
+import { useSystemValues } from '@/stores/systemValues';
+const notyf = new Notyf();
+const router = useRouter();
 
 const email = ref('');
 const password = ref('');
@@ -212,9 +218,29 @@ const password = ref('');
 const auth = getAuth();
 
 const handleLogin = async () => {
-  const credentials = await signInWithEmailAndPassword(auth, email.value, password.value);
-  if (credentials) {
-    console.log(credentials);
+  if (email.value === '' || password.value === '') {
+    notyf.error('Por favor, complete todos los campos');
+    return;
+  }
+  try {
+    const credentials = await signInWithEmailAndPassword(auth, email.value, password.value);
+    if (credentials.user) {
+      // set Name to user
+      notyf.success({
+        message: `Bienvenido nuevamente ${credentials.user.displayName}`,
+        dismissible: true,
+        duration: 5000,
+        ripple: true,
+        position: {
+          x: 'center',
+          y: 'top'
+        },
+      })
+      useSystemValues().setUserStatus(true);
+      router.push({ name: 'home' });
+    }
+  } catch (error) {
+    notyf.error('Error al iniciar sesión, verifique que sus credenciales sean correctas');
   }
 }
 </script>

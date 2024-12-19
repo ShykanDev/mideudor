@@ -28,6 +28,7 @@
       <div class="flex items-center mr-2 slide">
         <img class="imo max-h-14" src="../assets/img/Scotiabank_logo.svg" alt="" />
       </div>
+      <!-- repeat -->
       <div class="flex items-center mr-2 slide">
         <img class="imo max-h-14" src="../assets/img/Banco_Santander_Logotipo.svg" alt="" />
       </div>
@@ -96,7 +97,6 @@ $animationSpeed: 100s;
   margin: auto;
   overflow: hidden;
   position: relative;
-  width: 100vw;
 
 
   &::before,
