@@ -63,13 +63,14 @@
 
 <script lang="ts" setup>
 import MainLayout from '@/layouts/MainLayout.vue';
+import { useSystemValues } from '@/stores/systemValues';
 import { addDoc, collection, getFirestore } from 'firebase/firestore';
 import { ref } from 'vue';
 
 
 const db = getFirestore();
 const comment = ref('');
-const name = ref('Dana');
+const name = useSystemValues().getUserName ?? 'Usuario';
 const subject = ref('Histórico');
 const time = ref();
 const title = ref('');
@@ -78,7 +79,7 @@ const title = ref('');
 const hanleSubmit = async () => {
   if (
     comment.value &&
-    name.value &&
+    // name &&
     subject.value &&
     title.value
   ) {
@@ -88,7 +89,7 @@ const hanleSubmit = async () => {
         collection(db, 'comments'),
         {
           comment: comment.value,
-          name: name.value,
+          name: name,
           subject: subject.value,
           time: time.value,
           title: title.value

@@ -224,7 +224,8 @@ const handleLogin = async () => {
   }
   try {
     const credentials = await signInWithEmailAndPassword(auth, email.value, password.value);
-    if (credentials.user) {
+    if (credentials.user && credentials.user.displayName) {
+      useSystemValues().setUserName(credentials.user.displayName);
       // set Name to user
       notyf.success({
         message: `Bienvenido nuevamente ${credentials.user.displayName}`,
@@ -237,6 +238,7 @@ const handleLogin = async () => {
         },
       })
       useSystemValues().setUserStatus(true);
+
       router.push({ name: 'home' });
     }
   } catch (error) {
