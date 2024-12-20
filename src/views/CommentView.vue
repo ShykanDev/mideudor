@@ -96,8 +96,6 @@ const hanleSubmit = async () => {
         })
 
       comment.value = '';
-      // name.value = '';
-      // subject.value = '';
       time.value = '';
       title.value = '';
     } catch (error) {

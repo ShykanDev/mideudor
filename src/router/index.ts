@@ -74,6 +74,17 @@ const router = createRouter({
       meta: { authRequired: false },
     },
     {
+      path: '/restore-password',
+      name: 'restore',
+      component: () => import('../views/ForgotPassword.vue'),
+      meta: { authRequired: false },
+    },
+    {
+      path: '/contact',
+      name: 'contact',
+      component: () => import('../views/ContactView1.vue'),
+    },
+    {
       // to home
       path: '/:pathMatch(.*)*',
       redirect: { name: 'home' },
@@ -84,8 +95,14 @@ const router = createRouter({
     return { top: 0 }
   },
 })
-const notyf = new Notyf()
 
+const notyf = new Notyf({
+  duration: 4000,
+  position: {
+    x: 'right',
+    y: 'top',
+  },
+})
 router.beforeEach((to, from, next) => {
   const userAuth = useSystemValues().getUserStatus
   if (to.meta.authRequired && !userAuth) {

@@ -70,7 +70,7 @@
               </router-link>
             </li>
             <li>
-              <router-link to="/policy" class="hover:underline me-4 md:me-6">
+              <router-link :to="{ name: 'privacy' }" class="hover:underline me-4 md:me-6">
                 <i class="mr-1 fas fa-file-alt"></i> Política de privacidad
               </router-link>
             </li>
@@ -92,6 +92,9 @@
         <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">
           © 2024 <router-link to="/" class="hover:underline text-cyan-700">Mis Deudores</router-link>. Todos los
           derechos reservados.
+        </span>
+        <span class="block text-xs text-gray-500 sm:text-center dark:text-gray-400">
+          Diseño: PACA
         </span>
       </div>
     </footer>

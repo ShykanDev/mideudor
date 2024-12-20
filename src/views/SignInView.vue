@@ -190,7 +190,11 @@
               </div>
             </form>
             <div class="mt-4 text-sm text-center text-gray-600">
-              <p>¿No tiene una cuenta? <a href="#" class="text-black hover:underline">Registrese aquí</a>
+              <p>¿No tiene una cuenta? <router-link :to="{ name: 'register' }"
+                  class="text-black hover:underline">Regístrese aquí</router-link>
+              </p>
+              <p>¿Olvidó su contraseña? <router-link :to="{ name: 'restore' }"
+                  class="text-black hover:underline">Recuperar Contraseña</router-link>
               </p>
             </div>
           </div>

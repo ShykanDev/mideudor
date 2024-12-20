@@ -161,6 +161,8 @@
                   <i class="fas fa-om text-sky-600"></i>
                   <span class="font-semibold text-sky-800">Religioso</span>
                 </a>
+              </div>
+              <div class="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-4">
                 <a href="#Deudor Educativo"
                   class="flex items-center gap-3 p-3 transition transform rounded-lg bg-sky-100 hover:bg-sky-200 hover:shadow-lg hover:-translate-y-1">
                   <i class="fas fa-graduation-cap text-sky-600"></i>
@@ -171,7 +173,16 @@
                   <i class="fas fa-landmark text-sky-600"></i>
                   <span class="font-semibold text-sky-800">Histórico</span>
                 </a>
+                <div class="md:col-span-2 lg:col-span-2">
+                  <a href="#comentarios"
+                    class="flex items-center justify-center w-full px-4 py-2 text-base text-white transition duration-300 rounded-lg shadow-md font-kanit bg-cyan-800 hover:bg-cyan-700">
+                    <i class="mr-2 fas fa-info animate-pulse"></i>
+                    ¡Alerte a Otros! No deje que otros caigan en las mismas trampas. ¡Comparta su experiencia!
+                  </a>
+                </div>
+
               </div>
+
             </div>
           </div>
 
